@@ -1,3 +1,4 @@
+import 'package:firebase/view/Pages/Layout/MainLayout.dart';
 import 'package:firebase/view/Pages/SignIn/signin.dart';
 import 'package:firebase/view/Pages/User/users.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +136,14 @@ class _MyWidgetState extends State<logIn> {
                       Get.to(Registration());
                     },
                     child: Text("Sing Up")),
+                SizedBox(
+                  height: 20,
+                ),
+                TextButton(
+                    onPressed: () {
+                      Get.to(MainLayot());
+                    },
+                    child: Text("Home")),
                 SizedBox(
                   height: 20,
                 ),
