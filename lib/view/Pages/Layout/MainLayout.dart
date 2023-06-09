@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase/view/Pages/DeleteUser/DeleteUser.dart';
 import 'package:firebase/view/Pages/Home/home_View.dart';
 import 'package:firebase/view/Pages/ReadData/ShowData.dart';
+import 'package:firebase/view/Pages/updateUser/update.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,8 +19,8 @@ class MainLayot extends StatefulWidget {
 class _MainLayotState extends State<MainLayot> {
   final Controller c = Get.put(Controller());
   int _currentIndex = 0;
-  var _toDoController = TextEditingController();
-  List<Widget> pages = [HomePage(), ShowData()];
+  var toDoController = TextEditingController();
+  List<Widget> pages = [HomePage(), UpdatePage(), DeletePage()];
   CollectionReference _todo = FirebaseFirestore.instance.collection('ToDo');
   FirebaseAuth auth = FirebaseAuth.instance;
   Future<void> addTodo(String toDoTitle) {
@@ -38,7 +40,8 @@ class _MainLayotState extends State<MainLayot> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.add), label: "home"),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "Todo"),
+          BottomNavigationBarItem(icon: Icon(Icons.update), label: "update"),
+          BottomNavigationBarItem(icon: Icon(Icons.delete), label: "delete"),
         ],
         onTap: (index) {
           _currentIndex = index;
@@ -63,14 +66,14 @@ class _MainLayotState extends State<MainLayot> {
                       border: OutlineInputBorder(),
                       hintText: "To Do Title",
                     ),
-                    controller: _toDoController,
+                    controller: toDoController,
                   ),
                   SizedBox(
                     height: 40,
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        addTodo(_toDoController.text);
+                        addTodo(toDoController.text);
                       },
                       child: Icon(Icons.add)),
                 ],

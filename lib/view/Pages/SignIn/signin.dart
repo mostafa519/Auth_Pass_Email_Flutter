@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Registration extends StatefulWidget {
-  const Registration({super.key});
+  Registration({super.key});
 
   @override
   State<Registration> createState() => _RegistrationState();

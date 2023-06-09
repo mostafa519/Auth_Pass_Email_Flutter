@@ -6,31 +6,26 @@ import 'package:get/get.dart';
 
 import '../../../controller/controller.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({super.key});
+class UpdatePage extends StatefulWidget {
+  UpdatePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<UpdatePage> createState() => _UpdatePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _UpdatePageState extends State<UpdatePage> {
   final Controller c = Get.put(Controller());
   var _toDoController = TextEditingController();
+  var _toid = TextEditingController();
   CollectionReference _todo = FirebaseFirestore.instance.collection('ToDo');
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<void> addTodo(String toDoTitle) {
+  Future<void> updateUser(username, toDoTitle) {
     return _todo
-        .add({
-          'userId': auth.currentUser!.uid ?? "no user",
-          'toDoTitle': toDoTitle,
-
-          // 'full_name': fullName, // John Doe
-          // 'company': company, // Stokes and Sons
-          // 'age': age // 42
-        })
-        .then((value) => print("To Do Added"))
-        .catchError((error) => print("Failed to add To Do: $error"));
+        .doc("${username!}")
+        .update({'toDoTitle': toDoTitle})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
   }
 
   @override
@@ -52,6 +47,17 @@ class _HomePageState extends State<HomePage> {
                 border: OutlineInputBorder(),
                 hintText: "To Do Title",
               ),
+              controller: _toid,
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "To Do Title",
+              ),
               controller: _toDoController,
             ),
             SizedBox(
@@ -59,7 +65,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  addTodo(_toDoController.text);
+                  updateUser(_toid.text, _toDoController.text);
                 },
                 child: Icon(Icons.add)),
             SizedBox(
@@ -69,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Get.to(ShowData());
                 },
-                child: Text("Todo")),
+                child: Text("Todo"))
           ],
         ),
       ),

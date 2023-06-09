@@ -6,31 +6,25 @@ import 'package:get/get.dart';
 
 import '../../../controller/controller.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({super.key});
+class DeletePage extends StatefulWidget {
+  DeletePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<DeletePage> createState() => _DeletePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _DeletePageState extends State<DeletePage> {
   final Controller c = Get.put(Controller());
   var _toDoController = TextEditingController();
   CollectionReference _todo = FirebaseFirestore.instance.collection('ToDo');
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<void> addTodo(String toDoTitle) {
+  Future<void> updateUser(username) {
     return _todo
-        .add({
-          'userId': auth.currentUser!.uid ?? "no user",
-          'toDoTitle': toDoTitle,
-
-          // 'full_name': fullName, // John Doe
-          // 'company': company, // Stokes and Sons
-          // 'age': age // 42
-        })
-        .then((value) => print("To Do Added"))
-        .catchError((error) => print("Failed to add To Do: $error"));
+        .doc("${username!}")
+        .delete()
+        .then((value) => print("User Deleted"))
+        .catchError((error) => print("Failed to delete user: $error"));
   }
 
   @override
@@ -59,7 +53,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  addTodo(_toDoController.text);
+                  updateUser(_toDoController.text);
                 },
                 child: Icon(Icons.add)),
             SizedBox(
@@ -69,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Get.to(ShowData());
                 },
-                child: Text("Todo")),
+                child: Text("Todo"))
           ],
         ),
       ),
